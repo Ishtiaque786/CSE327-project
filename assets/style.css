@@ -1,0 +1,103 @@
+p {
+  line-break: anywhere;
+  overflow-wrap: anywhere;
+}
+.short-desc-wrapper p {
+  padding: 17px 25px;
+}
+
+.new-nav{
+  display: grid;
+  grid-template-areas: "lang logo post";
+  justify-content: space-between;
+  align-items: center;
+}
+.logo-brand img{
+  width: 200px;
+}
+.language-switcher{
+  grid-area: lang;
+}
+.logo-wrapper{
+  grid-area: logo;
+}
+.post-button-wrapper{
+  grid-area: post;
+}
+@media(min-width:991px){
+  .not-on-desktop{
+    display: none !important;
+  }
+  .top-bar {
+    padding-top: 5px;
+  }
+}
+.only-on-smd {
+  display: none !important;
+}
+@media(max-width:991px){
+  .top-bar {
+    padding: 5px 0 10px;
+  }
+  .also-mobile-wrapper{
+    display: grid !important;
+    grid-template-areas: "menu search" "searchbar searchbar" !important;
+  }
+  .search-toggler{
+    grid-area: search;
+    font-size: 30px;
+    margin: 12px 10px 12px 15px;
+  }
+  .navbar-header{
+    grid-area: menu;
+  }
+}
+
+@media(max-width:400px){
+  .language-switcher{
+    display: none;
+  }
+  .post-button-wrapper{
+    display: none;
+  }
+  .top-bar{
+    display: none;
+  }
+  .fixed-top {
+    top: 69px;
+  }
+  .only-on-smd{
+    display: block !important;
+  }
+  .navbar-header {
+    width: 100%;
+    display: grid;
+    grid-template-areas: "toggler login";
+    justify-content: space-between;
+  }
+  .slicknav_menu ul {
+    background: #fff;
+    margin-bottom: 25px;
+    border-radius: 0 !important;
+    width: 500%;
+  }
+}
+@media(max-width:227px){
+  .navbar-header {
+    display: block;
+  }
+}
+
+/* JQuery CSS*/
+.show, .hide {display: inline-block; width: 100%;grid-area: searchbar;}
+.hide {display: none; }
+.hide .search-bar{
+  margin:0;
+}
+
+.hide .search-bar .btn-common{
+  width: 70px;
+}
+.also-mobile-wrapper{
+  display: block;
+}
