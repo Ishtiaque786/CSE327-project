@@ -2,6 +2,31 @@
 require '../constants/config.php';
 require '../constants/check-login.php';
 
+$question_id = $_GET['node'];
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    
+    $stmt = $conn->prepare("SELECT * FROM tbl_faqs WHERE id = :id");
+    $stmt->bindParam(':id', $question_id);
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+
+    foreach($result as $row)
+    {
+        $ques = $row['quest'];
+        $answ = $row['answ'];
+
+    }
+                      
+    }catch(PDOException $e)
+    {
+    echo "Connection failed: " . $e->getMessage();
+    }
+
+
 if ($logged == "1") {
        if ($myrole == "admin") {
 
@@ -27,15 +52,17 @@ if ($logged == "1") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../assets/css/main-admin.css">
 
-    <title><?php echo $site_titlex; ?> - Frequently Asked Questions</title>
+    <title><?php echo $site_title; ?> - Edit Question</title>
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-    <link href="vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
-    <link href="vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
     <link href="dist/css/sb-admin-2.css" rel="stylesheet">
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/main-admin.css">
+    <link rel="icon" href="../assets/icon/favicon.ico">
+        <link rel="stylesheet" href="summernote/dist/summernote.css" />
+    <link rel="stylesheet" href="summernote/dist/summernote-bs3.css" />
+
 
 </head>
 
@@ -43,7 +70,7 @@ if ($logged == "1") {
 
     <div id="wrapper">
 
-         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -115,110 +142,65 @@ if ($logged == "1") {
             </div>
         
         </nav>
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-            <h4 class="page-header">Frequently Asked Questions</h4>
-        </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                     <?php require 'constants/check-reply.php'; ?>
-                     <a href="add-faq" class="btn btn-default">Add FAQ</a><br><br>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Frequently Asked Questions
-                        </div>
-
-
-                        <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <th>Question</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    try {
-                                   $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-                                      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    
-                                  $stmt = $conn->prepare("SELECT * FROM tbl_faqs");
-                                  $stmt->execute();
-                                  $result = $stmt->fetchAll();
-
-                                  foreach($result as $row)
-                                  {
-
-
-                                    ?>
-                                    <tr class="odd gradeX">
-                                        <td ><?php echo $row['quest']; ?> </td>
-                                        <td >
-                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    Select Action <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                     <li><a href="edit-quest?node=<?php echo $row['id'];?>">Edit</a>
-                                                    </li>
-    
-                                                <li><a onclick = "return confirm('Deleting faq ?');" href="app/drp-qs.php?node=<?php echo $row['id'];?>">Delete</a>
-                                                    </li>
-         
-                                                </ul>
-                                            </div></td>
-                                    </tr>
-                                    <?php
-        
-
-                                  }
-                      
-                                 }catch(PDOException $e)
-                                   {
-                                     echo "Connection failed: " . $e->getMessage();
-                                  }
-
-                                    ?>
-
-                                  
-                                </tbody>
-                            </table>
-
-                        </div>
-
+                    <h4 class="page-header">Edit Question</h4>
+                    <?php require 'constants/check-reply.php'; ?>
+                    <form action="app/update-qu.php" method="POST" autocomplete="off">
+                    <div class="form-group">
+                    <label>Question</label>
+                    <input class="form-control" name="question" value="<?php echo $ques; ?>" required>
+                
                     </div>
-    
+                    <textarea id="summernote" name="about" required>
+                      <?php echo $answ; ?>
+                    </textarea>
+                    <input type="hidden" value="<?php echo $question_id; ?>" name="id">
+                    <button type="submit" class="btn btn-default">Save</button><br><br>
+                </form>
                 </div>
-             
+
+
             </div>
          
+            <div class="row">
+
+            </div>
 
         </div>
-
 
     </div>
-
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/metisMenu/metisMenu.min.js"></script>
-    <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-    <script src="vendor/datatables-responsive/dataTables.responsive.js"></script>
     <script src="dist/js/sb-admin-2.js"></script>
+    <script src="summernote/dist/summernote.min.js"></script>
+    
+<script>
+    $('#summernote').summernote();
 
+    $(function () {
 
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
+        $('.summernote').summernote();
+
+        $('.summernote1').summernote({
+            toolbar: [
+                ['headline', ['style']],
+                ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+                ['textsize', ['fontsize']],
+                ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+            ]
         });
+
+        $('.summernote2').summernote({
+            airMode: true,
+        });
+
     });
-    </script>
+
+</script>
 
 </body>
 

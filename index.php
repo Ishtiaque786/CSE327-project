@@ -1,136 +1,228 @@
 <?php
-$page = 'home';
-require 'constants/config.php';
-require 'constants/check-login.php';
+require '../constants/config.php';
+require '../constants/check-login.php';
+require 'constants/fetch-my-info.php';
+
+if ($logged == "1") {
+       if ($myrole == "admin") {
+
+       }else{
+
+        header("location:../");
+
+       }
+
+    }else{
+
+        header("location:../admin/login");
+
+    }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<?php include("./Snippets/head-global.php"); ?>
-<title><?php echo $site_titlex; ?> - Classified Ads</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><?php echo $site_titlex; ?> - Admin Dashboard</title>
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="../assets/icon/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../assets/css/main-admin.css">
+
 </head>
 
 <body>
-   <header id="header-wrap">
-      <?php include("./Snippets/top-nav.php"); ?>
-      <div id="hero-area">
-         <div class="overlay"></div>
-         <div class="container">
-            <div class="row justify-content-center">
-               <div class="col-md-12 col-lg-9 col-xs-12 text-center">
-                  <div class="contents">
-                     <h1 class="head-title">Welcome to The Largest Ads Website</h1>
-                     <p>Buy and sell everything from used cars to mobile phones and computers, or search for property and more</p>
-                     <?php include("./Snippets/searchbar.php"); ?>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </header>
-   <section class="featured section-padding">
-      <div class="container">
-         <h1 class="section-title">Latest Products</h1>
-         <div class="row">
-            <?php require 'constants/fetch-latest-ads.php'; ?>
-         </div>
-      </div>
-   </section>
-   <section class="featured-lis section-padding">
-      <div class="container">
-         <div class="row">
-            <div class="col-md-12 wow fadeIn" data-wow-delay="0.5s">
-               <h3 class="section-title">Featured Products</h3>
-               <div id="new-products" class="owl-carousel owl-theme">
-                  <?php require 'constants/fetch-featured-ads.php'; ?>
-               </div>
-            </div>
-         </div>
-      </div>
-   </section>
-   <section class="works section-padding">
-      <div class="container">
-         <div class="row">
-            <div class="col-12">
-               <h3 class="section-title">How It Works?</h3>
-            </div>
-            <div class="col-lg-4 col-md-4 col-xs-12">
-               <div class="works-item">
-                  <div class="icon-box">
-                     <i class="lni-users"></i>
-                  </div>
-                  <p>Create an Account</p>
-               </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-xs-12">
-               <div class="works-item">
-                  <div class="icon-box">
-                     <i class="lni-bookmark-alt"></i>
-                  </div>
-                  <p>Post Ad Free</p>
-               </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-xs-12">
-               <div class="works-item">
-                  <div class="icon-box">
-                     <i class="lni-thumbs-up"></i>
-                  </div>
-                  <p>Deal Done</p>
-               </div>
-            </div>
-            <hr class="works-line">
-         </div>
-      </div>
-   </section>
-   <?php include("./Snippets/footer.php"); ?>
-   <a href="#" class="back-to-top">
-      <i class="lni-chevron-up"></i>
-   </a>
-   <div id="preloader">
-      <div class="loader" id="loader-1"></div>
-   </div>
-   <script src="assets/js/jquery-min.js"></script>
-   <script src="assets/js/popper.min.js"></script>
-   <script src="assets/js/bootstrap.min.js"></script>
-   <script src="assets/js/jquery.counterup.min.js"></script>
-   <script src="assets/js/waypoints.min.js"></script>
-   <script src="assets/js/wow.js"></script>
-   <script src="assets/js/owl.carousel.min.js"></script>
-   <script src="assets/js/jquery.slicknav.js"></script>
-   <script src="assets/js/main.js"></script>
-   <script src="assets/js/form-validator.min.js"></script>
-   <script src="assets/js/contact-form-script.min.js"></script>
-   <script src="assets/js/summernote.js"></script>
-   <script>
-      $(document).ready(function() {
 
-         var owl = $("#owl-demo");
+    <div id="wrapper">
 
-         owl.owlCarousel({
-            items: 10, //10 items above 1000px browser width
-            itemsDesktop: [1000, 5], //5 items between 1000px and 901px
-            itemsDesktopSmall: [900, 3], // betweem 900px and 601px
-            itemsTablet: [600, 2], //2 items between 600 and 0
-            itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
-         });
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a target="_blank" class="navbar-brand" href="../"><?php echo $site_title; ?></a>
+            </div>
+        
 
-         // Custom Navigation Events
-         $(".next").click(function() {
-            owl.trigger('owl.next');
-         })
-         $(".prev").click(function() {
-            owl.trigger('owl.prev');
-         })
-         $(".play").click(function() {
-            owl.trigger('owl.play', 1000); //owl.play event accept autoPlay speed as second parameter
-         })
-         $(".stop").click(function() {
-            owl.trigger('owl.stop');
-         })
+            <ul class="nav navbar-top-links navbar-right">
 
-      });
-   </script>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <?php echo $myusername; ?> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="account"><i class="fa fa-gear fa-fw"></i> Account Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="../logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+            </ul>
+           
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+
+                        <li>
+                            <a href="./"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="pub-ads"><i class="fa fa-edit fa-fw"></i> Published Ads</a>
+                        </li>
+                        <li>
+                            <a href="active-ads"><i class="fa fa-check-circle-o fa-fw"></i> Active Ads</a>
+                        </li>
+                        <li>
+                            <a href="pending-ads"><i class="fa fa-spinner fa-fw"></i> Pending Ads</a>
+                        </li>
+                        <li>
+                            <a href="featured-ads"><i class="fa fa-star-o fa-fw"></i> Featured Ads</a>
+                        </li>
+                        <li>
+                            <a href="users"><i class="fa fa-users fa-fw"></i> Users</a>
+                        </li>
+                        <li>
+                            <a href="account"><i class="fa fa-cog fa-fw"></i> Account Settings</a>
+                        </li>
+                        <li>
+                            <a href="faq"><i class="fa fa-question-circle fa-fw"></i> FAQ</a>
+                        </li>
+                        <li>
+                            <a href="about"><i class="fa fa-info-circle fa-fw"></i> About</a>
+                        </li>
+                         <li>
+                            <a href="../logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+
+                    </ul>
+                </div>
+              
+            </div>
+        
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Dashboard</h1>
+                </div>
+
+            </div>
+         
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-edit fa-4x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo number_format($total_ads); ?></div>
+                                    <div>Published Ads</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="pub-ads">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-check-circle-o fa-4x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo number_format($active_ads); ?></div>
+                                    <div>Active Ads</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="active-ads">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-spinner fa-4x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo number_format($pending_ads); ?></div>
+                                    <div>Pending Ads</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="pending-ads">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-star-o fa-4x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo number_format($featured_ads); ?></div>
+                                    <div>Featured Ads</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="featured-ads">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <script src="dist/js/sb-admin-2.js"></script>
+
 </body>
 
 </html>
