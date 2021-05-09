@@ -28,7 +28,7 @@ if ($logged == "1") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?php echo $site_titlex; ?> - Frequently Asked Questions</title>
+    <title><?php echo $site_titlex; ?> - Featured Ads</title>
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
     <link href="vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
@@ -118,25 +118,27 @@ if ($logged == "1") {
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-            <h4 class="page-header">Frequently Asked Questions</h4>
+            <h4 class="page-header">Featured Ads</h4>
         </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-                     <?php require 'constants/check-reply.php'; ?>
-                     <a href="add-faq" class="btn btn-default">Add FAQ</a><br><br>
+                    <?php require 'constants/check-reply.php'; ?>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Frequently Asked Questions
+                            Featured Ads
                         </div>
-
 
                         <div class="panel-body">
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>Question</th>
+                                        <th>Photo</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Author</th>
+                                        <th>Price <?php echo $currency; ?></th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -147,27 +149,51 @@ if ($logged == "1") {
                                       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     
-                                  $stmt = $conn->prepare("SELECT * FROM tbl_faqs");
+                                  $stmt = $conn->prepare("SELECT * FROM tbl_ads LEFT JOIN tbl_users ON tbl_users.user_id = tbl_ads.author WHERE tbl_ads.featured = 'yes'");
                                   $stmt->execute();
                                   $result = $stmt->fetchAll();
 
                                   foreach($result as $row)
                                   {
-
+                                    $ad_id = $row['ad_id'];
+                                    $directory = "../uploads/ads/$ad_id/";
+                                    $files = scandir ($directory);
+                                    $firstFile = $directory . $files[2];
+                                    $status = $row['status'];
+                                    $featured = $row['featured'];
 
                                     ?>
                                     <tr class="odd gradeX">
-                                        <td ><?php echo $row['quest']; ?> </td>
+                                        <td style="width:100px"><img style="width:100px" src="<?php echo $firstFile; ?>"></td>
+                                        <td style="width:200px"><?php echo $row['title']; ?> <br><?php echo $row['ad_id']; ?></td>
+                                        <td><?php echo $row['category']; ?></td>
+                                        <td ><?php echo $row['username']; ?></td>
+                                        <td ><?php echo number_format($row['price']); ?> </td>
                                         <td >
                                              <div class="btn-group">
                                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
                                                     Select Action <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                     <li><a href="edit-quest?node=<?php echo $row['id'];?>">Edit</a>
-                                                    </li>
-    
-                                                <li><a onclick = "return confirm('Deleting faq ?');" href="app/drp-qs.php?node=<?php echo $row['id'];?>">Delete</a>
+                                                    <li><a target="_blank" href="../ad/<?php echo $row['ad_id'];?>">View Ad</a>
+                                                        <?php
+                                                        if ($status == "active") { 
+                                               ?> <li><a href="app/make-inact.php?url=featured-ads&node=<?php echo $row['ad_id'];?>">Make Inactive</a><?php
+                                                        }else{
+                                               ?> <li><a href="app/make-act.php?url=featured-ads&node=<?php echo $row['ad_id'];?>">Make Active</a><?php
+                                                        }
+
+                                                        ?>
+
+                                                         <?php
+                                                        if ($featured == "yes") { 
+                                               ?> <li><a href="app/remov-feat.php?url=featured-ads&node=<?php echo $row['ad_id'];?>">Remove Featured</a><?php
+                                                        }else{
+                                               ?> <li><a href="app/make-feat.php?url=featured-ads&node=<?php echo $row['ad_id'];?>">Make Featured</a><?php
+                                                        }
+
+                                                        ?>
+                                                        <li><a onclick = "return confirm('Delete Ad ?');" href="app/drp-ad.php?url=featured-ads&node=<?php echo $row['ad_id'];?>">Delete</a>
                                                     </li>
          
                                                 </ul>

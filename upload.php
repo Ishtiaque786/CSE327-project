@@ -28,7 +28,7 @@ if ($logged == "1") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?php echo $site_titlex; ?> - Frequently Asked Questions</title>
+    <title><?php echo $site_titlex; ?> - Upload Ads</title>
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
     <link href="vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
@@ -118,76 +118,24 @@ if ($logged == "1") {
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-            <h4 class="page-header">Frequently Asked Questions</h4>
+            <h4 class="page-header">Upload Ads</h4>
         </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
                      <?php require 'constants/check-reply.php'; ?>
-                     <a href="add-faq" class="btn btn-default">Add FAQ</a><br><br>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Frequently Asked Questions
+                            Upload Ads
                         </div>
 
-
                         <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <th>Question</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    try {
-                                   $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-                                      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    
-                                  $stmt = $conn->prepare("SELECT * FROM tbl_faqs");
-                                  $stmt->execute();
-                                  $result = $stmt->fetchAll();
-
-                                  foreach($result as $row)
-                                  {
-
-
-                                    ?>
-                                    <tr class="odd gradeX">
-                                        <td ><?php echo $row['quest']; ?> </td>
-                                        <td >
-                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    Select Action <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                     <li><a href="edit-quest?node=<?php echo $row['id'];?>">Edit</a>
-                                                    </li>
-    
-                                                <li><a onclick = "return confirm('Deleting faq ?');" href="app/drp-qs.php?node=<?php echo $row['id'];?>">Delete</a>
-                                                    </li>
-         
-                                                </ul>
-                                            </div></td>
-                                    </tr>
-                                    <?php
-        
-
-                                  }
+                            <div class="alert alert-info">
+                                This feature is not available in admin mode, create a standard user to start share your ads.
+                            </div>
                       
-                                 }catch(PDOException $e)
-                                   {
-                                     echo "Connection failed: " . $e->getMessage();
-                                  }
-
-                                    ?>
-
-                                  
-                                </tbody>
-                            </table>
 
                         </div>
 

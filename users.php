@@ -28,7 +28,7 @@ if ($logged == "1") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?php echo $site_titlex; ?> - Frequently Asked Questions</title>
+    <title><?php echo $site_titlex; ?> - Users</title>
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
     <link href="vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
@@ -118,25 +118,27 @@ if ($logged == "1") {
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-            <h4 class="page-header">Frequently Asked Questions</h4>
+            <h4 class="page-header">Users</h4>
         </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
                      <?php require 'constants/check-reply.php'; ?>
-                     <a href="add-faq" class="btn btn-default">Add FAQ</a><br><br>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Frequently Asked Questions
+                            Users
                         </div>
-
 
                         <div class="panel-body">
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>Question</th>
+                                        <th>Photo</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Reg: Date</th>
+                                        <th>ID</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -147,27 +149,51 @@ if ($logged == "1") {
                                       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     
-                                  $stmt = $conn->prepare("SELECT * FROM tbl_faqs");
+                                  $stmt = $conn->prepare("SELECT * FROM tbl_users");
                                   $stmt->execute();
                                   $result = $stmt->fetchAll();
 
                                   foreach($result as $row)
                                   {
 
+                                    $avatar = $row['avatar'];
+                                    $ver = $row['verified'];
+
 
                                     ?>
                                     <tr class="odd gradeX">
-                                        <td ><?php echo $row['quest']; ?> </td>
+                                        <td style="width:60px">
+                                            <?php 
+                                        if ($avatar == null) {
+
+                                         print '<img style="width:60px" class="user_avatar" src="../assets/img/blank_avatar.png" alt="">';
+
+                                         }else{
+                                            print '<img style="width:60px" class="user_avatar" src="../uploads/avatar/'.$avatar.'" alt="">';
+
+                                         }
+
+                                        ?>
+                                        </td>
+                                        <td style="width:200px"><?php echo $row['username']; ?></td>
+                                        <td><?php echo $row['email']; ?></td>
+                                        <td ><?php echo $row['reg_date']; ?></td>
+                                        <td ><?php echo $row['user_id']; ?> </td>
                                         <td >
                                              <div class="btn-group">
                                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
                                                     Select Action <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                     <li><a href="edit-quest?node=<?php echo $row['id'];?>">Edit</a>
-                                                    </li>
-    
-                                                <li><a onclick = "return confirm('Deleting faq ?');" href="app/drp-qs.php?node=<?php echo $row['id'];?>">Delete</a>
+                                                        <?php
+                                                        if ($ver == "YES") { 
+                                               ?> <li><a href="app/unver.php?node=<?php echo $row['user_id'];?>">Remove Verification</a><?php
+                                                        }else{
+                                               ?> <li><a href="app/ver.php?&node=<?php echo $row['user_id'];?>">Verify Account</a><?php
+                                                        }
+
+                                                        ?>
+                                                <li><a onclick = "return confirm('Deleting user will delete the ads posted by user too. continue ?');" href="app/drp-user.php?img=<?php echo $row['avatar'];?>&node=<?php echo $row['user_id'];?>">Delete</a>
                                                     </li>
          
                                                 </ul>
