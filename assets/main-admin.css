@@ -1,0 +1,14 @@
+.navbar-brand{
+    padding: 0 !important;
+    min-height: 66px;
+}
+
+.navbar-brand>img {
+    width: 200px !important;
+}
+
+@media (min-width: 768px){
+    .sidebar{
+        margin-top: 67px !important;
+    }
+}
